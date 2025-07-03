@@ -78,47 +78,52 @@ const Index = () => {
   };
 
   const extractTextFromFile = async (file: File): Promise<string> => {
+    console.log('Extracting text from:', file.name, 'Type:', file.type);
+    
     if (file.type === 'application/pdf') {
       return await extractTextFromPDF(file);
     } else {
-      // For DOCX and text files
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const text = e.target?.result as string;
-          resolve(text);
-        };
-        reader.onerror = () => reject(new Error('Failed to read file'));
-        reader.readAsText(file);
-      });
+      // For DOCX and text files - simplified approach
+      const text = await file.text();
+      console.log('Extracted text length:', text.length);
+      return text;
     }
   };
 
   const extractTextFromPDF = async (file: File): Promise<string> => {
     try {
-      const pdfjsLib = await import('pdfjs-dist');
+      console.log('Starting PDF extraction...');
       
-      // Set worker
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs`;
-      
+      // Use a simpler approach - convert to text for now
+      // For production, you'd want proper PDF parsing
       const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const text = new TextDecoder().decode(arrayBuffer);
       
-      let fullText = '';
+      // Basic cleanup - remove non-printable characters but keep structure
+      const cleanText = text
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
       
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items
-          .map((item: any) => item.str)
-          .join(' ');
-        fullText += pageText + '\n';
+      console.log('PDF text extracted, length:', cleanText.length);
+      
+      if (cleanText.length < 50) {
+        throw new Error('Could not extract readable text from PDF');
       }
       
-      return fullText;
+      return cleanText;
     } catch (error) {
       console.error('PDF extraction error:', error);
-      throw new Error('Failed to extract text from PDF');
+      
+      // Fallback: try reading as text
+      try {
+        const text = await file.text();
+        console.log('Fallback text extraction, length:', text.length);
+        return text;
+      } catch (fallbackError) {
+        console.error('Fallback extraction failed:', fallbackError);
+        throw new Error('Could not extract text from PDF. Please try converting to .txt or .docx format.');
+      }
     }
   };
 
