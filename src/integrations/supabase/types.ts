@@ -9,7 +9,84 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      cv_analyses: {
+        Row: {
+          achievements: Json | null
+          education: Json | null
+          education_count: number | null
+          email: string | null
+          experience_count: number | null
+          experiences: Json | null
+          extracted_keywords: Json | null
+          file_size: number | null
+          id: string
+          name: string | null
+          original_filename: string | null
+          personal_data: Json | null
+          processed_at: string
+          projects: Json | null
+          projects_count: number | null
+          raw_text_preview: string | null
+          research_work: Json | null
+          skills: Json | null
+          skills_count: number | null
+          timestamp: string
+          total_experience_years: number | null
+          total_score: number
+          user_id: string | null
+        }
+        Insert: {
+          achievements?: Json | null
+          education?: Json | null
+          education_count?: number | null
+          email?: string | null
+          experience_count?: number | null
+          experiences?: Json | null
+          extracted_keywords?: Json | null
+          file_size?: number | null
+          id?: string
+          name?: string | null
+          original_filename?: string | null
+          personal_data?: Json | null
+          processed_at?: string
+          projects?: Json | null
+          projects_count?: number | null
+          raw_text_preview?: string | null
+          research_work?: Json | null
+          skills?: Json | null
+          skills_count?: number | null
+          timestamp?: string
+          total_experience_years?: number | null
+          total_score: number
+          user_id?: string | null
+        }
+        Update: {
+          achievements?: Json | null
+          education?: Json | null
+          education_count?: number | null
+          email?: string | null
+          experience_count?: number | null
+          experiences?: Json | null
+          extracted_keywords?: Json | null
+          file_size?: number | null
+          id?: string
+          name?: string | null
+          original_filename?: string | null
+          personal_data?: Json | null
+          processed_at?: string
+          projects?: Json | null
+          projects_count?: number | null
+          raw_text_preview?: string | null
+          research_work?: Json | null
+          skills?: Json | null
+          skills_count?: number | null
+          timestamp?: string
+          total_experience_years?: number | null
+          total_score?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

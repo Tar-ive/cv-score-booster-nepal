@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
+import { supabase } from '@/integrations/supabase/client';
 import { CVUploader } from '@/components/CVUploader';
 import { ScoreDisplay } from '@/components/ScoreDisplay';
 import { RecommendationsPanel } from '@/components/RecommendationsPanel';
@@ -22,57 +23,102 @@ const Index = () => {
   const [processingStage, setProcessingStage] = useState(0);
   const { toast } = useToast();
 
-  // Simulate CV analysis process
+  // Real CV analysis process
   const handleFileUpload = async (file: File) => {
     setIsProcessing(true);
     setResult(null);
     setProcessingStage(0);
 
     try {
-      // Simulate processing stages
-      const stages = [
-        { stage: 0, message: 'Reading CV content...' },
-        { stage: 25, message: 'Extracting text and structure...' },
-        { stage: 50, message: 'Analyzing ATS compatibility...' },
-        { stage: 75, message: 'Generating recommendations...' },
-        { stage: 100, message: 'Analysis complete!' }
-      ];
-
-      for (const { stage, message } of stages) {
-        setProcessingStage(stage);
-        await new Promise(resolve => setTimeout(resolve, 800));
+      // Read file content
+      setProcessingStage(25);
+      const text = await extractTextFromFile(file);
+      
+      if (!text) {
+        throw new Error('Could not extract text from file');
       }
 
-      // Generate mock results based on file characteristics
-      const mockScore = Math.floor(Math.random() * 40) + 50; // 50-90 range
-      const mockFeedback = [
-        "✅ Valid email address found",
-        "✅ Phone number included",
-        "✅ Work experience section present",
-        "✅ Skills section identified",
-        "✅ Good content length detected"
-      ].slice(0, Math.floor(Math.random() * 3) + 2);
+      // AI Analysis
+      setProcessingStage(50);
+      const { data, error } = await supabase.functions.invoke('analyze-cv', {
+        body: {
+          resumeText: text,
+          fileName: file.name
+        }
+      });
 
+      if (error) {
+        throw new Error(error.message || 'Analysis failed');
+      }
+
+      setProcessingStage(100);
+      
       setResult({
-        score: mockScore,
-        feedback: mockFeedback,
+        score: data.score,
+        feedback: data.feedback,
         fileName: file.name
       });
 
       toast({
         title: "Analysis Complete!",
-        description: `Your CV "${file.name}" has been analyzed successfully.`,
+        description: `Your CV "${file.name}" scored ${data.score}/100.`,
       });
 
     } catch (error) {
+      console.error('CV analysis error:', error);
       toast({
-        title: "Error",
-        description: "Failed to analyze CV. Please try again.",
+        title: "Analysis Failed",
+        description: error instanceof Error ? error.message : "Please try again.",
         variant: "destructive",
       });
     } finally {
       setIsProcessing(false);
       setProcessingStage(0);
+    }
+  };
+
+  const extractTextFromFile = async (file: File): Promise<string> => {
+    if (file.type === 'application/pdf') {
+      return await extractTextFromPDF(file);
+    } else {
+      // For DOCX and text files
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target?.result as string;
+          resolve(text);
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsText(file);
+      });
+    }
+  };
+
+  const extractTextFromPDF = async (file: File): Promise<string> => {
+    try {
+      const pdfjsLib = await import('pdfjs-dist');
+      
+      // Set worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs`;
+      
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      
+      let fullText = '';
+      
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items
+          .map((item: any) => item.str)
+          .join(' ');
+        fullText += pageText + '\n';
+      }
+      
+      return fullText;
+    } catch (error) {
+      console.error('PDF extraction error:', error);
+      throw new Error('Failed to extract text from PDF');
     }
   };
 
