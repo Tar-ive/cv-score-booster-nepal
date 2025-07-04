@@ -24,6 +24,7 @@ export const CVUploader: React.FC<CVUploaderProps> = ({ onFileUpload, isProcessi
     accept: {
       'application/pdf': ['.pdf'],
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+      'text/plain': ['.txt'],
     },
     multiple: false,
     disabled: isProcessing,
@@ -62,13 +63,13 @@ export const CVUploader: React.FC<CVUploaderProps> = ({ onFileUpload, isProcessi
               </h3>
               <p className="text-muted-foreground">
                 {isProcessing 
-                  ? "Please wait while we analyze your resume for ATS compatibility"
+                  ? "Using advanced PDF.js extraction for better text quality"
                   : "Drag & drop your CV here, or click to select"
                 }
               </p>
               {!isProcessing && (
                 <p className="text-sm text-muted-foreground">
-                  Supports PDF and DOCX files
+                  Supports PDF (text-based), DOCX, and TXT files
                 </p>
               )}
             </div>
