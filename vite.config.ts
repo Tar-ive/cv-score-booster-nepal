@@ -19,4 +19,15 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    include: ['pdfjs-dist'],
+  },
+  build: {
+    rollupOptions: {
+      external: (id) => {
+        // Don't bundle PDF.js worker
+        return id.includes('pdf.worker');
+      },
+    },
+  },
 }));
