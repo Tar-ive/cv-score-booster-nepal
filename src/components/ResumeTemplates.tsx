@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import ReactMarkdown from 'react-markdown';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { 
   Briefcase, 
   Code, 
@@ -14,7 +17,8 @@ import {
   Palette,
   Wand2,
   Download,
-  Eye
+  Eye,
+  FileText
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -90,7 +94,8 @@ export const ResumeTemplates: React.FC<ResumeTemplatesProps> = ({
   const [selectedTemplate, setSelectedTemplate] = useState<string>('professional');
   const [isGenerating, setIsGenerating] = useState(false);
   const [editedText, setEditedText] = useState(extractedText);
-  const [activeTab, setActiveTab] = useState<'templates' | 'editor' | 'preview'>('templates');
+  const [activeTab, setActiveTab] = useState<'templates' | 'editor' | 'preview' | 'markdown'>('templates');
+  const [viewMode, setViewMode] = useState<'text' | 'markdown'>('text');
   const { toast } = useToast();
 
   const handleTemplateSelect = async (templateId: string) => {
@@ -161,6 +166,53 @@ export const ResumeTemplates: React.FC<ResumeTemplatesProps> = ({
     URL.revokeObjectURL(url);
   };
 
+  const handleExportToPDF = async () => {
+    try {
+      const element = document.getElementById('resume-preview');
+      if (!element) return;
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`resume_${selectedTemplate}_template.pdf`);
+      
+      toast({
+        title: "PDF Exported!",
+        description: "Your resume has been saved as a PDF.",
+      });
+    } catch (error) {
+      console.error('PDF export error:', error);
+      toast({
+        title: "Export Error",
+        description: "Could not export to PDF. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card className="w-full shadow-lg">
       <CardHeader>
@@ -171,10 +223,11 @@ export const ResumeTemplates: React.FC<ResumeTemplatesProps> = ({
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="editor">AI Editor</TabsTrigger>
             <TabsTrigger value="preview">Preview</TabsTrigger>
+            <TabsTrigger value="markdown">Markdown</TabsTrigger>
           </TabsList>
 
           <TabsContent value="templates" className="space-y-4">
@@ -272,7 +325,15 @@ export const ResumeTemplates: React.FC<ResumeTemplatesProps> = ({
                   onClick={handleDownload}
                 >
                   <Download className="h-4 w-4 mr-2" />
-                  Download
+                  Download TXT
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleExportToPDF}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Export PDF
                 </Button>
                 <Button 
                   size="sm"
@@ -283,11 +344,55 @@ export const ResumeTemplates: React.FC<ResumeTemplatesProps> = ({
               </div>
             </div>
             
-            <ScrollArea className="h-[500px] border rounded-lg p-6 bg-white">
+            <ScrollArea className="h-[500px] border rounded-lg p-6 bg-white" id="resume-preview">
               <div className="prose max-w-none">
                 <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
                   {editedText}
                 </pre>
+              </div>
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="markdown" className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Markdown View</h3>
+              <div className="space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setActiveTab('editor')}
+                >
+                  <PenTool className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleDownload}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download TXT
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleExportToPDF}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Export PDF
+                </Button>
+                <Button 
+                  size="sm"
+                  onClick={handleSaveChanges}
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+            
+            <ScrollArea className="h-[500px] border rounded-lg p-6 bg-white" id="markdown-preview">
+              <div className="prose max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground">
+                <ReactMarkdown>{editedText}</ReactMarkdown>
               </div>
             </ScrollArea>
           </TabsContent>

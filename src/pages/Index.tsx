@@ -171,7 +171,40 @@ const Index = () => {
   const analyzeCV = async (text: string, fileName: string): Promise<{ score: number; feedback: string[]; detailedAnalysis?: any }> => {
     console.log('Analyzing CV content with AI analysis...');
     
-    // Try to use OpenAI API if available
+    try {
+      // Call Supabase edge function to analyze the CV
+      const response = await fetch('https://cjkuvjzztigzlohtbdjz.supabase.co/functions/v1/analyze-cv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqa3V2anp6dGlnemxvaHRiZGp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Nzc3NzEsImV4cCI6MjA2NzE1Mzc3MX0.MFk7pmTTPNZmlPvC4X9v2Gxi4ipal7hCpBmt6AB8hfA`
+        },
+        body: JSON.stringify({
+          resumeText: text,
+          fileName: fileName
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('CV analysis completed successfully:', data);
+        return {
+          score: data.score || 75,
+          feedback: data.feedback || ['AI analysis completed'],
+          detailedAnalysis: data.detailedAnalysis || {
+            strengths: ['Professional format detected'],
+            weaknesses: ['Could be improved'],
+            suggestions: ['Add more specific achievements']
+          }
+        };
+      } else {
+        throw new Error('Failed to analyze CV with edge function');
+      }
+    } catch (error) {
+      console.log('Supabase edge function failed, using fallback analysis:', error);
+    }
+    
+    // Try to use OpenAI API if available (fallback)
     const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
     
     if (openaiApiKey && openaiApiKey.startsWith('sk-')) {

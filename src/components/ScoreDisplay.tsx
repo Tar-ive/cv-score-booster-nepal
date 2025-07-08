@@ -95,7 +95,7 @@ export const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                  <span className="text-sm text-success-foreground">{item}</span>
+                  <span className="text-sm text-foreground">{item}</span>
                 </div>
               ))}
             </div>
