@@ -5,12 +5,13 @@ import { ScoreDisplay } from '@/components/ScoreDisplay';
 import { RecommendationsPanel } from '@/components/RecommendationsPanel';
 import { AIEditSection } from '@/components/AIEditSection';
 import { ResumeViewer } from '@/components/ResumeViewer';
+import { ResumeTemplates } from '@/components/ResumeTemplates';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Lightbulb, RefreshCw, FileText, Edit3, Eye } from 'lucide-react';
+import { Lightbulb, RefreshCw, FileText, Edit3, Eye, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PDFExtractor } from '@/services/pdfExtractor';
 import * as mammoth from 'mammoth';
@@ -33,7 +34,7 @@ const Index = () => {
   const [processingStage, setProcessingStage] = useState(0);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [extractedText, setExtractedText] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<'score' | 'viewer' | 'editor'>('score');
+  const [activeTab, setActiveTab] = useState<'score' | 'viewer' | 'editor' | 'templates'>('score');
   const { toast } = useToast();
 
   // Enhanced CV analysis process
@@ -484,7 +485,7 @@ const Index = () => {
         {result && !isProcessing && (
           <div className="space-y-8">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="score" className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
                   Score & Analysis
@@ -492,6 +493,10 @@ const Index = () => {
                 <TabsTrigger value="viewer" className="flex items-center gap-2">
                   <Eye className="h-4 w-4" />
                   Resume Viewer
+                </TabsTrigger>
+                <TabsTrigger value="templates" className="flex items-center gap-2">
+                  <Wand2 className="h-4 w-4" />
+                  Templates
                 </TabsTrigger>
                 <TabsTrigger value="editor" className="flex items-center gap-2">
                   <Edit3 className="h-4 w-4" />
@@ -515,6 +520,13 @@ const Index = () => {
               <TabsContent value="viewer" className="space-y-6">
                 <ResumeViewer 
                   file={uploadedFile}
+                  extractedText={extractedText}
+                  onTextUpdate={handleTextUpdate}
+                />
+              </TabsContent>
+              
+              <TabsContent value="templates" className="space-y-6">
+                <ResumeTemplates 
                   extractedText={extractedText}
                   onTextUpdate={handleTextUpdate}
                 />
