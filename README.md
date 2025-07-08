@@ -1,73 +1,183 @@
-# Welcome to your Lovable project
+# Recruit Nepal CV Analyzer
 
-## Project info
+A powerful, AI-driven CV/Resume analysis tool that provides instant ATS (Applicant Tracking System) compatibility scoring and detailed feedback to help job seekers optimize their resumes for the Nepalese job market.
 
-**URL**: https://lovable.dev/projects/50e3e98e-2b1f-4699-a394-dec4b42ffb9a
+**🔗 [Live Demo](https://recruitnepalcv.vercel.app/) | [GitHub Repository](https://github.com/Tar-ive/cv-score-booster-nepal)**
 
-## How can I edit this code?
+## 🌟 Features
 
-There are several ways of editing your application.
+- **Multi-format Support**: Upload and analyze PDF, DOCX, and TXT resume files
+- **ATS Compatibility Scoring**: Get instant scores (0-100) for ATS-friendliness
+- **AI-Powered Analysis**: Leverage OpenAI GPT and Anthropic Claude for intelligent feedback
+- **Detailed Feedback**: Receive specific suggestions for improvement
+- **Fallback Analysis**: Local rule-based analysis when AI services are unavailable
+- **Modern UI**: Clean, responsive design with dark/light mode
+- **Mobile Responsive**: Works seamlessly on all device sizes
 
-**Use Lovable**
+## 🛠️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/50e3e98e-2b1f-4699-a394-dec4b42ffb9a) and start prompting.
+- **React 18.3.1** with TypeScript 5.5.3
+- **Vite 5.4.1** - Fast build tool and dev server
+- **Tailwind CSS 3.4.11** + **shadcn/ui** components
+- **Supabase** - Backend and database
+- **OpenAI SDK** & **Anthropic SDK** - AI model integration
+- **pdf-parse** & **mammoth** - Document parsing
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Quick Start
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+
+- OpenAI API key (optional)
+- Anthropic API key (optional)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Tar-ive/cv-score-booster-nepal.git
+   cd cv-score-booster-nepal
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. **Configure environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Add your API keys:
+   ```env
+   VITE_OPENAI_API_KEY=your-openai-key
+   VITE_ANTHROPIC_API_KEY=your-anthropic-key
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+5. **Open your browser**
+   Navigate to http://localhost:8080
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── AIEditSection.tsx
+│   ├── CVUploader.tsx
+│   ├── Header.tsx
+│   ├── RecommendationsPanel.tsx
+│   ├── ResumeViewer.tsx
+│   ├── ScoreDisplay.tsx
+│   └── ui/                    # shadcn/ui components
+├── hooks/
+├── integrations/
+│   └── supabase/
+├── lib/
+├── pages/
+├── services/
+│   ├── aiAnalysisService.ts
+│   ├── pdfExtractor.ts
+│   └── pdfTextExtractor.ts
+└── types/
 ```
 
-**Edit a file directly in GitHub**
+## 📖 Usage Guide
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Uploading a CV
 
-**Use GitHub Codespaces**
+1. Drag and drop or click to upload your CV file
+2. Supported formats: PDF, DOCX, TXT (max 10MB)
+3. Wait for AI analysis to complete
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Understanding Your Score
 
-## What technologies are used for this project?
+- **90-100**: Excellent ATS compatibility
+- **80-89**: Good, minor improvements needed
+- **70-79**: Fair, several areas for improvement
+- **60-69**: Poor, significant changes required
+- **Below 60**: Major restructuring needed
 
-This project is built with:
+## 🏗️ Development
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Available Scripts
 
-## How can I deploy this project?
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+npm run type-check   # TypeScript type checking
+```
 
-Simply open [Lovable](https://lovable.dev/projects/50e3e98e-2b1f-4699-a394-dec4b42ffb9a) and click on Share -> Publish.
+### How AI Analysis Works
 
-## Can I connect a custom domain to my Lovable project?
+1. **Text Extraction**: Extracts text from PDF/DOCX/TXT files
+2. **Analysis Priority**: OpenAI GPT → Anthropic Claude → Local fallback
+3. **Scoring**: Returns ATS compatibility score (0-100) with detailed feedback
 
-Yes, you can!
+## 🚀 Deployment
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+The app is deployed on Vercel at [recruitnepalcv.vercel.app](https://recruitnepalcv.vercel.app/)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Deploy Your Own
+
+```bash
+npm run build
+```
+
+Deploy to Vercel, Netlify, or any static hosting platform.
+
+**Environment Variables for Production:**
+- `VITE_OPENAI_API_KEY`
+- `VITE_ANTHROPIC_API_KEY`
+
+## 🔒 Security Considerations
+
+⚠️ **Note**: This implementation stores API keys in the frontend for simplicity. For production use:
+
+- Implement a backend API to handle AI requests
+- Store API keys securely on the server
+- Add authentication and rate limiting
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+- **"No AI analysis" Error**: Check API keys in .env.local
+- **PDF parsing issues**: Ensure PDF is not password-protected
+- **API rate limits**: Wait or upgrade API plan
+
+### Debug Mode
+
+```env
+VITE_DEBUG=true
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 🗺️ Roadmap
+
+- [ ] Batch CV processing
+- [ ] CV template recommendations
+- [ ] Industry-specific analysis
+- [ ] Multi-language support
+- [ ] Advanced analytics dashboard
+
+---
+
+**Built with ❤️ for the Nepalese job market**
