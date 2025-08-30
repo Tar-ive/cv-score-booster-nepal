@@ -11,18 +11,19 @@ import BuilderHeader from '@/components/builder/BuilderHeader';
 import { exportTemplateAsPDF } from '@/lib/utils/pdfExport';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     templateSlug: string;
-  };
+  }>;
 }
 
-export default function BuilderPage({ params }: PageProps) {
+export default async function BuilderPage({ params }: PageProps) {
+  const { templateSlug } = await params;
   const [cvData, setCvData] = useState<CVData>(getEmptyCV());
   const [activeSection, setActiveSection] = useState<string>('personal');
   const [previewMode, setPreviewMode] = useState<boolean>(false);
   const [isExporting, setIsExporting] = useState<boolean>(false);
   
-  const template = getTemplate(params.templateSlug);
+  const template = getTemplate(templateSlug);
   
   if (!template) {
     notFound();
@@ -60,7 +61,7 @@ export default function BuilderPage({ params }: PageProps) {
     
     setIsExporting(true);
     try {
-      await exportTemplateAsPDF(params.templateSlug, cvData.personalInfo);
+      await exportTemplateAsPDF(templateSlug, cvData.personalInfo);
     } catch (error) {
       console.error('Export failed:', error);
       alert('Failed to export PDF. Please try again.');
@@ -112,7 +113,7 @@ export default function BuilderPage({ params }: PageProps) {
               <div className="bg-white shadow-xl rounded-lg">
                 <div className="p-8">
                   <TemplateRenderer
-                    templateSlug={params.templateSlug}
+                    templateSlug={templateSlug}
                     data={cvData}
                     previewMode={false}
                   />

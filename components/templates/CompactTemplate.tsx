@@ -30,7 +30,7 @@ export default function CompactTemplate({ data, className = '', printMode = fals
                     <a href={link.url} className="text-blue-600 hover:underline">
                       {link.label || link.type}
                     </a>
-                    {index < personalInfo.links.length - 1 && ' | '}
+                    {personalInfo.links && index < personalInfo.links.length - 1 && ' | '}
                   </span>
                 ))}
               </>

@@ -17,7 +17,7 @@ export default function StartupTemplate({ data, className = '', printMode = fals
                 <img
                   src={personalInfo.photo}
                   alt={`${personalInfo.firstName} ${personalInfo.lastName}`}
-                  className="w-28 h-28 rounded-2xl object-cover border-4 border-white/30 shadow-2xl transform hover:scale-105 transition-transform"
+                  className="w-28 h-28 rounded-2xl object-cover border-4 border-white/30 shadow-2xl"
                 />
               </div>
             )}
@@ -27,37 +27,20 @@ export default function StartupTemplate({ data, className = '', printMode = fals
                 <h1 className="text-4xl font-bold text-white">
                   {personalInfo.firstName} {personalInfo.lastName}
                 </h1>
-                <div className="px-3 py-1 bg-white/20 rounded-full text-sm font-medium backdrop-blur">
-                  =Ä Available
+                <div className="px-3 py-1 bg-white/20 rounded-full text-sm font-medium">
+                  üöÄ Available
                 </div>
               </div>
               <p className="text-xl text-white/90 mb-4">{personalInfo.title}</p>
               
               <div className="flex flex-wrap gap-4 text-sm">
                 <span className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1">
-                  <span>=Á</span> {personalInfo.email}
+                  <span>üìß</span> {personalInfo.email}
                 </span>
                 <span className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1">
-                  <span>=Ò</span> {personalInfo.phone}
-                </span>
-                <span className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1">
-                  <span>=˙</span> {personalInfo.location.city}
+                  <span>üì±</span> {personalInfo.phone}
                 </span>
               </div>
-              
-              {personalInfo.links && personalInfo.links.length > 0 && (
-                <div className="flex gap-3 mt-3">
-                  {personalInfo.links.map((link, index) => (
-                    <a
-                      key={index}
-                      href={link.url}
-                      className="bg-white/20 hover:bg-white/30 rounded-lg px-3 py-2 text-sm font-medium transition-colors backdrop-blur"
-                    >
-                      {link.label || link.type}
-                    </a>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -67,20 +50,16 @@ export default function StartupTemplate({ data, className = '', printMode = fals
           <div className="space-y-6">
             {/* Vision/Summary */}
             {personalInfo.summary && (
-              <div className="bg-gray-800/50 rounded-xl p-6 backdrop-blur">
-                <h2 className="text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
-                  <® Vision
-                </h2>
+              <div className="bg-gray-800/50 rounded-xl p-6">
+                <h2 className="text-lg font-bold text-emerald-400 mb-3">üé® Vision</h2>
                 <p className="text-gray-300 leading-relaxed text-sm">{personalInfo.summary}</p>
               </div>
             )}
 
             {/* Tech Stack */}
             {sections.skills.length > 0 && (
-              <div className="bg-gray-800/50 rounded-xl p-6 backdrop-blur">
-                <h2 className="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">
-                  ô Tech Stack
-                </h2>
+              <div className="bg-gray-800/50 rounded-xl p-6">
+                <h2 className="text-lg font-bold text-cyan-400 mb-4">‚öôÔ∏è Tech Stack</h2>
                 {sections.skills.map((category) => (
                   <div key={category.id} className="mb-4">
                     <h3 className="text-sm font-semibold text-white mb-2">{category.category}</h3>
@@ -101,10 +80,8 @@ export default function StartupTemplate({ data, className = '', printMode = fals
           </div>
 
           {/* Center Column - Experience */}
-          <div className="bg-gray-800/50 rounded-xl p-6 backdrop-blur">
-            <h2 className="text-lg font-bold text-yellow-400 mb-4 flex items-center gap-2">
-              =º Journey
-            </h2>
+          <div className="bg-gray-800/50 rounded-xl p-6">
+            <h2 className="text-lg font-bold text-yellow-400 mb-4">üíº Journey</h2>
             {sections.experience.length > 0 && (
               <div className="space-y-4">
                 {sections.experience.map((exp, index) => (
@@ -119,16 +96,6 @@ export default function StartupTemplate({ data, className = '', printMode = fals
                       <p className="text-xs text-gray-400 mb-2">
                         {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
                       </p>
-                      {exp.highlights && exp.highlights.length > 0 && (
-                        <ul className="space-y-1">
-                          {exp.highlights.slice(0, 2).map((highlight, idx) => (
-                            <li key={idx} className="text-xs text-gray-300 flex items-start">
-                              <span className="text-cyan-400 mr-2">í</span>
-                              <span>{highlight}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -138,12 +105,26 @@ export default function StartupTemplate({ data, className = '', printMode = fals
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Projects/MVPs */}
+            {/* Education */}
+            {sections.education.length > 0 && (
+              <div className="bg-gray-800/50 rounded-xl p-6">
+                <h2 className="text-lg font-bold text-orange-400 mb-4">üéì Learning</h2>
+                <div className="space-y-3">
+                  {sections.education.map((edu) => (
+                    <div key={edu.id} className="border-l-2 border-orange-400 pl-3">
+                      <h3 className="font-semibold text-white text-sm">{edu.degree}</h3>
+                      <p className="text-orange-400 text-xs">{edu.field}</p>
+                      <p className="text-gray-400 text-xs">{edu.institution}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Projects */}
             {sections.projects.length > 0 && (
-              <div className="bg-gray-800/50 rounded-xl p-6 backdrop-blur">
-                <h2 className="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2">
-                  =Ä MVPs & Projects
-                </h2>
+              <div className="bg-gray-800/50 rounded-xl p-6">
+                <h2 className="text-lg font-bold text-purple-400 mb-4">üöÄ MVPs & Projects</h2>
                 <div className="space-y-3">
                   {sections.projects.slice(0, 3).map((project) => (
                     <div key={project.id} className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-lg p-3">
@@ -159,42 +140,6 @@ export default function StartupTemplate({ data, className = '', printMode = fals
                           </span>
                         ))}
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Education */}
-            {sections.education.length > 0 && (
-              <div className="bg-gray-800/50 rounded-xl p-6 backdrop-blur">
-                <h2 className="text-lg font-bold text-orange-400 mb-4 flex items-center gap-2">
-                  <ì Learning
-                </h2>
-                <div className="space-y-3">
-                  {sections.education.map((edu) => (
-                    <div key={edu.id} className="border-l-2 border-orange-400 pl-3">
-                      <h3 className="font-semibold text-white text-sm">{edu.degree}</h3>
-                      <p className="text-orange-400 text-xs">{edu.field}</p>
-                      <p className="text-gray-400 text-xs">{edu.institution}</p>
-                      <p className="text-xs text-gray-500">{edu.endDate}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Achievements */}
-            {sections.awards && sections.awards.length > 0 && (
-              <div className="bg-gray-800/50 rounded-xl p-6 backdrop-blur">
-                <h2 className="text-lg font-bold text-pink-400 mb-4 flex items-center gap-2">
-                  <∆ Wins
-                </h2>
-                <div className="space-y-2">
-                  {sections.awards.map((award) => (
-                    <div key={award.id} className="bg-gradient-to-r from-pink-600/20 to-red-600/20 rounded-lg p-2">
-                      <h3 className="font-semibold text-white text-xs">{award.title}</h3>
-                      <p className="text-pink-300 text-xs">{award.issuer} " {award.date}</p>
                     </div>
                   ))}
                 </div>

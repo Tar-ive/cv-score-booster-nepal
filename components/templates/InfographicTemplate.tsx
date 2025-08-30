@@ -24,9 +24,9 @@ export default function InfographicTemplate({ data, className = '', printMode = 
               </h1>
               <p className="text-blue-100 text-lg">{personalInfo.title}</p>
               <div className="flex flex-wrap gap-4 mt-3 text-sm">
-                <span>=Á {personalInfo.email}</span>
-                <span>=ﬁ {personalInfo.phone}</span>
-                <span>=Õ {personalInfo.location.city}</span>
+                <span>üìß {personalInfo.email}</span>
+                <span>üìû {personalInfo.phone}</span>
+                <span>üìç {personalInfo.location.city}</span>
               </div>
             </div>
           </div>
@@ -45,22 +45,12 @@ export default function InfographicTemplate({ data, className = '', printMode = 
                 <div className="text-2xl font-bold">{sections.projects.length}</div>
                 <div className="text-xs opacity-90">PROJECTS</div>
               </div>
-              <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl p-4 text-white text-center">
-                <div className="text-2xl font-bold">{sections.education.length}</div>
-                <div className="text-xs opacity-90">EDUCATION</div>
-              </div>
-              <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl p-4 text-white text-center">
-                <div className="text-2xl font-bold">{sections.certifications.length}</div>
-                <div className="text-xs opacity-90">CERTS</div>
-              </div>
             </div>
 
-            {/* Skills with Progress Bars */}
+            {/* Skills */}
             {sections.skills.length > 0 && (
               <div className="bg-white rounded-xl p-5 shadow-lg">
-                <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <® Skills Overview
-                </h3>
+                <h3 className="font-bold text-gray-800 mb-4">üé® Skills Overview</h3>
                 {sections.skills.map((category) => (
                   <div key={category.id} className="mb-4">
                     <h4 className="text-xs font-semibold text-gray-600 mb-2">{category.category}</h4>
@@ -84,11 +74,9 @@ export default function InfographicTemplate({ data, className = '', printMode = 
             )}
           </div>
 
-          {/* Center Column - Experience Timeline */}
+          {/* Center Column - Experience */}
           <div className="bg-white rounded-xl p-5 shadow-lg">
-            <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-              =º Experience Timeline
-            </h3>
+            <h3 className="font-bold text-gray-800 mb-4">üíº Experience Timeline</h3>
             {sections.experience.length > 0 && (
               <div className="space-y-4">
                 {sections.experience.map((exp, index) => (
@@ -103,16 +91,6 @@ export default function InfographicTemplate({ data, className = '', printMode = 
                       <p className="text-xs text-gray-500">
                         {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
                       </p>
-                      {exp.highlights && exp.highlights.length > 0 && (
-                        <ul className="mt-1 space-y-0.5">
-                          {exp.highlights.slice(0, 2).map((highlight, idx) => (
-                            <li key={idx} className="text-xs text-gray-600 flex items-start">
-                              <span className="text-blue-400 mr-1">"</span>
-                              <span className="line-clamp-2">{highlight}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -125,9 +103,7 @@ export default function InfographicTemplate({ data, className = '', printMode = 
             {/* About */}
             {personalInfo.summary && (
               <div className="bg-white rounded-xl p-5 shadow-lg">
-                <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  =› About Me
-                </h3>
+                <h3 className="font-bold text-gray-800 mb-3">üìù About Me</h3>
                 <p className="text-xs text-gray-700 leading-relaxed">{personalInfo.summary}</p>
               </div>
             )}
@@ -135,43 +111,13 @@ export default function InfographicTemplate({ data, className = '', printMode = 
             {/* Education */}
             {sections.education.length > 0 && (
               <div className="bg-white rounded-xl p-5 shadow-lg">
-                <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  <ì Education
-                </h3>
+                <h3 className="font-bold text-gray-800 mb-3">üéì Education</h3>
                 <div className="space-y-3">
                   {sections.education.map((edu) => (
                     <div key={edu.id} className="border-l-3 border-indigo-400 pl-3">
                       <h4 className="font-semibold text-xs">{edu.degree}</h4>
                       <p className="text-xs text-indigo-600">{edu.field}</p>
                       <p className="text-xs text-gray-500">{edu.institution}</p>
-                      <p className="text-xs text-gray-500">{edu.endDate}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Projects */}
-            {sections.projects.length > 0 && (
-              <div className="bg-white rounded-xl p-5 shadow-lg">
-                <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  =Ä Key Projects
-                </h3>
-                <div className="space-y-2">
-                  {sections.projects.slice(0, 3).map((project) => (
-                    <div key={project.id} className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3">
-                      <h4 className="font-semibold text-xs text-purple-800">{project.name}</h4>
-                      <p className="text-xs text-gray-600 line-clamp-2">{project.description}</p>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {project.technologies.slice(0, 2).map((tech, index) => (
-                          <span
-                            key={index}
-                            className="px-2 py-0.5 bg-purple-200 text-purple-700 rounded text-xs"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   ))}
                 </div>

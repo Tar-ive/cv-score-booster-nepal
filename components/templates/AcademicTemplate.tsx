@@ -113,20 +113,16 @@ export default function AcademicTemplate({ data, className = '', printMode = fal
         )}
 
         {/* Publications (if any) */}
-        {sections.publications && sections.publications.length > 0 && (
+        {sections.projects && sections.projects.length > 0 && (
           <div className="mb-6">
             <h2 className="text-xl font-serif font-bold text-gray-900 mb-3 border-b border-gray-400 pb-1">
-              Publications
+              Research & Projects
             </h2>
             <div className="space-y-2">
-              {sections.publications.map((pub) => (
-                <div key={pub.id} className="text-sm">
+              {sections.projects.map((proj) => (
+                <div key={proj.id} className="text-sm">
                   <p className="text-gray-900">
-                    {pub.authors}. ({pub.year}). "{pub.title}." <i>{pub.journal}</i>
-                    {pub.volume && `, ${pub.volume}`}
-                    {pub.issue && `(${pub.issue})`}
-                    {pub.pages && `, pp. ${pub.pages}`}.
-                    {pub.doi && ` DOI: ${pub.doi}`}
+                    <span className="font-semibold">{proj.name}</span> - {proj.description}
                   </p>
                 </div>
               ))}
