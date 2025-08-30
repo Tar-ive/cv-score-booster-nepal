@@ -1,24 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { getTemplate } from '@/lib/templates/templateRegistry';
 import { CVData } from '@/types/cv.types';
-import { getEmptyCV } from '@/lib/templates/sampleData';
+import { getSampleData } from '@/lib/templates/sampleData';
 import CVForm from '@/components/builder/CVForm';
 import TemplateRenderer from '@/components/templates/TemplateRenderer';
 import BuilderHeader from '@/components/builder/BuilderHeader';
 import { exportTemplateAsPDF } from '@/lib/utils/pdfExport';
 
-interface PageProps {
-  params: Promise<{
-    templateSlug: string;
-  }>;
-}
-
-export default async function BuilderPage({ params }: PageProps) {
-  const { templateSlug } = await params;
-  const [cvData, setCvData] = useState<CVData>(getEmptyCV());
+export default function BuilderPage() {
+  const params = useParams();
+  const templateSlug = params.templateSlug as string;
+  const [cvData, setCvData] = useState<CVData>(getSampleData());
   const [activeSection, setActiveSection] = useState<string>('personal');
   const [previewMode, setPreviewMode] = useState<boolean>(false);
   const [isExporting, setIsExporting] = useState<boolean>(false);
