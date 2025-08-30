@@ -37,6 +37,21 @@ export default function PersonalInfoForm({ data, onChange }: PersonalInfoFormPro
     onChange({ links: newLinks });
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onChange({ photo: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removePhoto = () => {
+    onChange({ photo: undefined });
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -44,6 +59,51 @@ export default function PersonalInfoForm({ data, onChange }: PersonalInfoFormPro
         <p className="text-sm text-gray-600 mb-6">
           Enter your personal details and contact information.
         </p>
+      </div>
+
+      {/* Profile Photo Upload */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Profile Photo
+        </label>
+        <div className="flex items-center gap-4">
+          {data.photo ? (
+            <div className="relative">
+              <img
+                src={data.photo}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
+              />
+              <button
+                onClick={removePhoto}
+                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                type="button"
+              >
+                ×
+              </button>
+            </div>
+          ) : (
+            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+              <span className="text-gray-400 text-3xl">👤</span>
+            </div>
+          )}
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+              id="photo-upload"
+            />
+            <label
+              htmlFor="photo-upload"
+              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              {data.photo ? 'Change Photo' : 'Upload Photo'}
+            </label>
+            <p className="text-xs text-gray-500 mt-1">JPG, PNG up to 5MB</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

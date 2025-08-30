@@ -8,6 +8,7 @@ interface BuilderHeaderProps {
   onExport: () => void;
   previewMode: boolean;
   onTogglePreview: () => void;
+  isExporting?: boolean;
 }
 
 export default function BuilderHeader({
@@ -16,6 +17,7 @@ export default function BuilderHeader({
   onExport,
   previewMode,
   onTogglePreview,
+  isExporting = false,
 }: BuilderHeaderProps) {
   return (
     <header className="h-16 bg-white border-b shadow-sm">
@@ -50,9 +52,13 @@ export default function BuilderHeader({
           
           <button
             onClick={onExport}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            disabled={isExporting}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
-            Export PDF
+            {isExporting && (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            )}
+            {isExporting ? 'Exporting...' : 'Export PDF'}
           </button>
         </div>
       </div>

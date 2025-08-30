@@ -1,6 +1,19 @@
 import { CVData } from '@/types/cv.types';
 import ModernTemplate from './ModernTemplate';
 import ProfessionalTemplate from './ProfessionalTemplate';
+import ExecutiveTemplate from './ExecutiveTemplate';
+import CreativeTemplate from './CreativeTemplate';
+import MinimalTemplate from './MinimalTemplate';
+import TechTemplate from './TechTemplate';
+import AcademicTemplate from './AcademicTemplate';
+import DesignerTemplate from './DesignerTemplate';
+import BoldTemplate from './BoldTemplate';
+import CompactTemplate from './CompactTemplate';
+import ElegantTemplate from './ElegantTemplate';
+import SwissTemplate from './SwissTemplate';
+import InfographicTemplate from './InfographicTemplate';
+import ClassicTemplate from './ClassicTemplate';
+import StartupTemplate from './StartupTemplate';
 
 interface TemplateRendererProps {
   templateSlug: string;
@@ -37,29 +50,122 @@ export default function TemplateRenderer({
             previewMode={previewMode}
           />
         );
-      case 'creative':
-        // Creative template placeholder - will use Modern as fallback for now
+      case 'executive':
         return (
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-lg">
-            <ModernTemplate
-              data={data}
-              className={className}
-              printMode={printMode}
-              previewMode={previewMode}
-            />
-          </div>
+          <ExecutiveTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'creative':
+        return (
+          <CreativeTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'minimal':
+        return (
+          <MinimalTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
         );
       case 'tech':
-        // Tech template placeholder - will use Professional as fallback for now
         return (
-          <div className="bg-gray-900 text-white p-6 rounded-lg">
-            <ProfessionalTemplate
-              data={data}
-              className="bg-gray-900 text-white"
-              printMode={printMode}
-              previewMode={previewMode}
-            />
-          </div>
+          <TechTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'academic':
+        return (
+          <AcademicTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'designer':
+        return (
+          <DesignerTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'bold':
+        return (
+          <BoldTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'compact':
+        return (
+          <CompactTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'elegant':
+        return (
+          <ElegantTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'swiss':
+        return (
+          <SwissTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'infographic':
+        return (
+          <InfographicTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'classic':
+        return (
+          <ClassicTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
+        );
+      case 'startup':
+        return (
+          <StartupTemplate
+            data={data}
+            className={className}
+            printMode={printMode}
+            previewMode={previewMode}
+          />
         );
       default:
         return (

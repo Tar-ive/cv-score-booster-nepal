@@ -8,6 +8,7 @@ import { getEmptyCV } from '@/lib/templates/sampleData';
 import CVForm from '@/components/builder/CVForm';
 import TemplateRenderer from '@/components/templates/TemplateRenderer';
 import BuilderHeader from '@/components/builder/BuilderHeader';
+import { exportTemplateAsPDF } from '@/lib/utils/pdfExport';
 
 interface PageProps {
   params: {
@@ -19,6 +20,7 @@ export default function BuilderPage({ params }: PageProps) {
   const [cvData, setCvData] = useState<CVData>(getEmptyCV());
   const [activeSection, setActiveSection] = useState<string>('personal');
   const [previewMode, setPreviewMode] = useState<boolean>(false);
+  const [isExporting, setIsExporting] = useState<boolean>(false);
   
   const template = getTemplate(params.templateSlug);
   
@@ -53,9 +55,18 @@ export default function BuilderPage({ params }: PageProps) {
     }));
   };
 
-  const handleExport = () => {
-    // This will be implemented when we add PDF export
-    console.log('Exporting CV...');
+  const handleExport = async () => {
+    if (isExporting) return;
+    
+    setIsExporting(true);
+    try {
+      await exportTemplateAsPDF(params.templateSlug, cvData.personalInfo);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Failed to export PDF. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleSave = () => {
@@ -72,6 +83,7 @@ export default function BuilderPage({ params }: PageProps) {
         onExport={handleExport}
         previewMode={previewMode}
         onTogglePreview={() => setPreviewMode(!previewMode)}
+        isExporting={isExporting}
       />
 
       <div className="flex h-[calc(100vh-64px)]">

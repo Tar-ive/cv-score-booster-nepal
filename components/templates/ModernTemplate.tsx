@@ -8,8 +8,19 @@ export default function ModernTemplate({ data, className = '', printMode = false
       <div className="flex">
         {/* Sidebar */}
         <div className="w-1/3 bg-gray-100 p-6">
+          {/* Profile Photo */}
+          {personalInfo.photo && (
+            <div className="mb-6 text-center">
+              <img
+                src={personalInfo.photo}
+                alt={`${personalInfo.firstName} ${personalInfo.lastName}`}
+                className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-lg"
+              />
+            </div>
+          )}
+          
           {/* Personal Info */}
-          <div className="mb-8">
+          <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-1">
               {personalInfo.firstName} {personalInfo.lastName}
             </h1>
